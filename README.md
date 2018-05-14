@@ -57,7 +57,7 @@ geth --datadir .ethereum_private init genesis.json
 
 ```
 
-Now lets run the node and bring up the console interface:
+Next, run the node and bring up the console interface:
 
 ```
 geth --identity "Name" --ipcpath ~/Library/Ethereum/geth.ipc --networkid 3631098 --datadir .ethereum_private console --nodiscover --rpc --rpccorsdomain * --rpcaddr 0.0.0.0 --rpcport 8545 --rpcapi "db,eth,net,web3" --maxpeers 100
@@ -96,7 +96,7 @@ Create an account:
 personal.newAccount()
 ```
 
-Check the new account print the `eth.accounts` array:
+Check the new account (print the `eth.accounts` array):
 
 ```
 eth.accounts
@@ -114,11 +114,15 @@ Due to our server constraints, use a single thread:
 miner.start(1)
 ```
 
+After some time, check your account balance (you should have some Ether from the mining process):
+
 ```
 web3.fromWei(eth.getBalance(eth.accounts[0]))
 ```
 
-Peers are manually added using node address. To get your node address use:
+### Connecting peers
+
+Peers are manually added using node addresses. To get your node address use:
 
 ```
 admin.nodeInfo
