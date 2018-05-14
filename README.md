@@ -29,7 +29,7 @@ touch genesis.json
 
 Write the following into `genesis.json`:
 
-```
+```javascript
 {
     "nonce": "0x0000000000000042",
     "timestamp": "0x00",
@@ -126,7 +126,7 @@ admin.nodeInfo
 
 Output:
 
-```
+```javascript
 {
   enode: "enode://5f370345934fbd4f10234f447840e82ab01cb6db0c2b5c43c527374f23a3b04ca7727875ed51c7f5a34655861eb614bbb37897e6a36f2e5c11df7e20ad8c31e6@[::]:30303?discport=0",
   id: "5f370345934fbd4f10234f447840e82ab01cb6db0c2b5c43c527374f23a3b04ca7727875ed51c7f5a34655861eb614bbb37897e6a36f2e5c11df7e20ad8c31e6",
@@ -162,13 +162,13 @@ enode: "enode://5f370345934fbd4f10234f447840e82ab01cb6db0c2b5c43c527374f23a3b04c
 ```
 To add this node as a peer (in another node), we need to delete the `?discport=0` and replace the `[::]` with the public IP of the server:
 
-```
+```javascript
 admin.addPeer("enode://0e2b3a42dca53e36b8588a65384c85484c9534409e791ec101ef32be90de2b932e4741894436e55a3895a48bbfd18a466ee51124937b0fd858335565a7e2b382@40.117.248.235:30303")
 ```
 
 Now we can send ether to other accounts:
 
-```
+```javascript
 eth.sendTransaction({  
 	from: eth.accounts[0],
 	to: "0xb30a296fef21542dbccd87a3a5143d3fb8bc36ca",
@@ -181,7 +181,7 @@ eth.sendTransaction({
 
 We can check that the `to` account will have 1 more ether:
 
-```
+```javascript
 web3.fromWei(eth.getBalance("0xb30a296fef21542dbccd87a3a5143d3fb8bc36ca"))
 ```
 
@@ -214,7 +214,7 @@ npm install -g solc
 
 Create a file named `Greeter.sol` and copy this code into it:
 
-```
+```javascript
 pragma solidity ^0.4.23;
 
 contract Mortal {
@@ -246,14 +246,14 @@ contract Greeter is Mortal {
 
 To load the contract into the Ethereum Blockchain:
 
-```
+```javascript
 var greeterFactory = eth.contract(<contents of the file Greeter.abi>)
 
 var greeterCompiled = "0x" + "<contents of the file Greeter.bin>"
 ```
 To instanciate the contract:
 
-```
+```javascript
 var greetMessage = "Test string"
 
 var greeter = greeterFactory.new(greetMessage, {
@@ -279,19 +279,19 @@ var greeter = greeterFactory.new(greetMessage,{from:eth.accounts[0],data:greeter
 
 To interact with the contract:
 
-```
+```javascript
 greeter.greet().call();
 ```
 
 This will output:
 
-```
+```javascript
 "Test string"
 ```
 
 To kill the contract (and clean the blockchain), we use:
 
-```
+```javascript
 greeter.kill.sendTransaction({
 	from: eth.accounts[0]
 });
@@ -299,7 +299,7 @@ greeter.kill.sendTransaction({
 
 Too verify that the contracts has been terminated, we check the following command returns `0`.
 
-```
+```javascript
 eth.getCode(greeter.contractAddress);
 ```
 
@@ -307,7 +307,7 @@ eth.getCode(greeter.contractAddress);
 
 Create a file named `Counter.sol` and copy this code into it:
 
-```
+```javascript
 pragma solidity ^0.4.23;
 
 contract Counter {
@@ -348,7 +348,7 @@ contract Counter {
 
 Instantiate the contract the same way as the first example:
 
-```
+```javascript
 var factory = eth.contract(<contents of ABI file>);
 
 var compiled = "0x" + "<contents of BIN file>";
@@ -379,7 +379,7 @@ var contract = factory.new(120, {from:eth.accounts[0],data:compiled,gas:47000}, 
 
 Since this contract actually writes data to the blockchain, we need to interact with it using `sendTransaction`:
 
-```
+```javascript
 var txnHash = contract.increase.sendTransaction({  
 	from: eth.accounts[0]
 });
@@ -389,20 +389,20 @@ var txnHash = contract.increase.sendTransaction({
 
 When can check the `count` value using:
 
-```
+```javascript
 contract.getCount.call();
 ```
 
 Once the TXN has been included in the Blockchain, we can inspect it using:
 
-```
+```javascript
 web3.eth.getTransactionReceipt(txnHash);
 ```
 #### Events
 
 We can add watchers to the events we defined in the contract:
 
-```
+```javascript
 // Instantiate the event
 var event = contract.IncreasedCount({});
 
@@ -420,7 +420,7 @@ Now each time a `IncreasedCount` event happens, we will be notified.
 
 Code:
 
-```
+```javascript
 pragma solidity ^0.4.23;
 
 contract Coin { 
@@ -452,7 +452,7 @@ contract Coin {
 
 Once instantiated, create a watcher for the `CoinTransfer` event:
 
-```
+```javascript
 var transferEvent = coins.CoinTransfer({});
 
 transferEvent.watch(function(err, result) {
@@ -468,13 +468,13 @@ transferEvent.watch(function(err, result) {
 ```
 Since the `coinBalanceOf` mapping of the contract is public, we can access it from the console:
 
-```
+```javascript
 coins.coinBalanceOf(<address>);
 ```
 
 To send some coins to other addresses (in this example, 20 coins):
 
-```
+```javascript
 coins.sendCoin.sendTransaction("<address>", 20, {
   from: eth.accounts[0]
 });
